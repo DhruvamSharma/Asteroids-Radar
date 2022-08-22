@@ -20,8 +20,8 @@ private val retrofit = Retrofit.Builder()
  * This interface defines all the calls our app will make using a particular [BASE_URL]
  */
 interface AsteroidApiService {
-    @GET("neo/rest/v1/feed?start_date=2015-09-07&end_date=2015-09-08&api_key=DEMO_KEY")
-    suspend fun getAsteroidFeed(): JSONObject
+    @GET("neo/rest/v1/feed?start_date=2022-08-22&end_date=2022-08-24&api_key=DEMO_KEY")
+    suspend fun getAsteroidFeed(): String
 }
 
 /**

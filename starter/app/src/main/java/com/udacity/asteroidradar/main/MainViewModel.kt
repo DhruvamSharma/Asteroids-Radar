@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.udacity.asteroidradar.api.AsteroidApi
 import com.udacity.asteroidradar.api.parseAsteroidsJsonResult
 import kotlinx.coroutines.launch
+import org.json.JSONObject
 import java.lang.Exception
 
 class MainViewModel : ViewModel() {
@@ -22,7 +23,8 @@ class MainViewModel : ViewModel() {
         viewModelScope.launch {
            try {
                val response = AsteroidApi.service.getAsteroidFeed()
-               _response.value = parseAsteroidsJsonResult(response).first().codename
+               println("MainViewModel.fetchAllAsteroids -- ${parseAsteroidsJsonResult(JSONObject(response))}")
+               _response.value = parseAsteroidsJsonResult(JSONObject(response)).first().codename
            } catch(ex: Exception) {
                _response.value = "error: ${ex.message}"
            }
