@@ -7,10 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.udacity.asteroidradar.api.AsteroidApi
 import com.udacity.asteroidradar.api.parseAsteroidsJsonResult
 import kotlinx.coroutines.launch
-import org.json.JSONObject
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import java.lang.Exception
 
 class MainViewModel : ViewModel() {
     private val _response = MutableLiveData<String>()
@@ -23,16 +20,12 @@ class MainViewModel : ViewModel() {
 
     private fun fetchAllAsteroids() {
         viewModelScope.launch {
-            AsteroidApi.service.getAsteroidFeed().enqueue(object: Callback<JSONObject> {
-                override fun onResponse(call: Call<JSONObject>, response: Response<JSONObject>) {
-                    _response.value = parseAsteroidsJsonResult(response.body()).first().codename
-                }
-
-                override fun onFailure(call: Call<JSONObject>, t: Throwable) {
-                    _response.value = "error: ${t.message}"
-                }
-            })
-
+           try {
+               val response = AsteroidApi.service.getAsteroidFeed()
+               _response.value = parseAsteroidsJsonResult(response).first().codename
+           } catch(ex: Exception) {
+               _response.value = "error: ${ex.message}"
+           }
         }
     }
 }

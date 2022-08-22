@@ -2,7 +2,6 @@ package com.udacity.asteroidradar.api
 
 import com.udacity.asteroidradar.Constants.BASE_URL
 import org.json.JSONObject
-import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import retrofit2.http.GET
@@ -22,7 +21,7 @@ private val retrofit = Retrofit.Builder()
  */
 interface AsteroidApiService {
     @GET("neo/rest/v1/feed?start_date=2015-09-07&end_date=2015-09-08&api_key=DEMO_KEY")
-    fun getAsteroidFeed(): Call<JSONObject>
+    suspend fun getAsteroidFeed(): JSONObject
 }
 
 /**
