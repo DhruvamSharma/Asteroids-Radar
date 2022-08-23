@@ -6,6 +6,7 @@ import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
 
@@ -23,7 +24,9 @@ class MainFragment : Fragment(), MenuProvider {
         binding.viewModel = viewModel
 
         // setup adapter
-        binding.asteroidRecycler.adapter = AsteroidListAdapter()
+        binding.asteroidRecycler.adapter = AsteroidListAdapter(AsteroidListAdapter.AsteroidClickListener {
+            findNavController().navigate(MainFragmentDirections.actionShowDetail(it))
+        })
 
         // setup menu
         val menuHost = requireActivity()
