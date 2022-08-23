@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.udacity.asteroidradar.PictureOfDay
 import com.udacity.asteroidradar.api.AsteroidApi
 import com.udacity.asteroidradar.api.parseAsteroidsJsonResult
 import kotlinx.coroutines.launch
@@ -15,15 +16,29 @@ class MainViewModel : ViewModel() {
     val response: LiveData<String>
         get() = _response
 
+
+    private val _imageOfTheDay = MutableLiveData<PictureOfDay?>()
+    val imageOfTheDay: LiveData<PictureOfDay?> get() = _imageOfTheDay
+
     init {
         fetchAllAsteroids()
+        fetchImageOfTheDay()
+    }
+
+    private fun fetchImageOfTheDay() {
+        viewModelScope.launch {
+            try {
+                _imageOfTheDay.value = AsteroidApi.service.getAsteroidImageOfTheDay()
+            } catch (ex: Exception) {
+                _imageOfTheDay.value = null
+            }
+        }
     }
 
     private fun fetchAllAsteroids() {
         viewModelScope.launch {
            try {
                val response = AsteroidApi.service.getAsteroidFeed()
-               println("MainViewModel.fetchAllAsteroids -- ${parseAsteroidsJsonResult(JSONObject(response))}")
                _response.value = parseAsteroidsJsonResult(JSONObject(response)).first().codename
            } catch(ex: Exception) {
                _response.value = "error: ${ex.message}"
