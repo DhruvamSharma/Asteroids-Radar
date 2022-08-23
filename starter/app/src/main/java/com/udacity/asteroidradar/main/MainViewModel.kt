@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.PictureOfDay
 import com.udacity.asteroidradar.api.AsteroidApi
 import com.udacity.asteroidradar.api.parseAsteroidsJsonResult
@@ -12,8 +13,8 @@ import org.json.JSONObject
 import java.lang.Exception
 
 class MainViewModel : ViewModel() {
-    private val _response = MutableLiveData<String>()
-    val response: LiveData<String>
+    private val _response = MutableLiveData<List<Asteroid>>()
+    val response: LiveData<List<Asteroid>>
         get() = _response
 
 
@@ -39,9 +40,9 @@ class MainViewModel : ViewModel() {
         viewModelScope.launch {
            try {
                val response = AsteroidApi.service.getAsteroidFeed()
-               _response.value = parseAsteroidsJsonResult(JSONObject(response)).first().codename
+               _response.value = parseAsteroidsJsonResult(JSONObject(response))
            } catch(ex: Exception) {
-               _response.value = "error: ${ex.message}"
+               _response.value = mutableListOf()
            }
         }
     }

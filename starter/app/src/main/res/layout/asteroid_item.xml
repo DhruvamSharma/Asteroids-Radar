@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="asteroid"
+            type="com.udacity.asteroidradar.Asteroid" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp">
+
+        <TextView
+            android:id="@+id/codeName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            tools:text="@string/image_of_the_day"
+            android:text="@{asteroid.codename}"
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            android:paddingStart="16dp"
+            tools:text="@string/image_of_the_day"
+            android:text="@{asteroid.closeApproachDate}"
+
+            app:layout_constraintStart_toStartOf="@id/codeName"
+            app:layout_constraintTop_toBottomOf="@id/codeName"/>
+
+        <ImageView
+            android:id="@+id/asteroidStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:padding="16dp"
+            app:srcCompat="@drawable/placeholder_picture_of_day"
+            app:statusIcon="@{asteroid.potentiallyHazardous}"
+            tools:src="@drawable/asteroid_hazardous"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/codeName"
+            app:layout_constraintBottom_toBottomOf="@id/date"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
