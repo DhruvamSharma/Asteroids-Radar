@@ -1,49 +1,38 @@
 package com.udacity.asteroidradar.main
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.udacity.asteroidradar.domain.Asteroid
+import android.app.Application
+import androidx.lifecycle.*
 import com.udacity.asteroidradar.domain.PictureOfDay
 import com.udacity.asteroidradar.api.AsteroidApi
-import com.udacity.asteroidradar.api.parseAsteroidsJsonResult
+import com.udacity.asteroidradar.database.getDatabase
+import com.udacity.asteroidradar.domain.Asteroid
+import com.udacity.asteroidradar.repository.AsteroidRepository
 import kotlinx.coroutines.launch
-import org.json.JSONObject
 import java.lang.Exception
 
-class MainViewModel : ViewModel() {
-    private val _response = MutableLiveData<List<Asteroid>>()
-    val response: LiveData<List<Asteroid>>
-        get() = _response
-
-
+class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val _imageOfTheDay = MutableLiveData<PictureOfDay?>()
     val imageOfTheDay: LiveData<PictureOfDay?> get() = _imageOfTheDay
 
+    private val database = getDatabase(application.applicationContext)
+    private val repository = AsteroidRepository(database)
+
+    val asteroids = repository.asteroids
+
     init {
-        fetchAllAsteroids()
+        refreshAsteroidList()
         fetchImageOfTheDay()
     }
 
     private fun fetchImageOfTheDay() {
         viewModelScope.launch {
-            try {
-                _imageOfTheDay.value = AsteroidApi.service.getAsteroidImageOfTheDay()
-            } catch (ex: Exception) {
-                _imageOfTheDay.value = null
-            }
+            _imageOfTheDay.value = repository.getImageOfTheDay()
         }
     }
 
-    private fun fetchAllAsteroids() {
+    private fun refreshAsteroidList() {
         viewModelScope.launch {
-           try {
-               val response = AsteroidApi.service.getAsteroidFeed()
-               _response.value = parseAsteroidsJsonResult(JSONObject(response))
-           } catch(ex: Exception) {
-               _response.value = mutableListOf()
-           }
+            repository.refreshCache()
         }
     }
 }

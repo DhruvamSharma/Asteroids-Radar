@@ -8,6 +8,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Query
 
 
 private val moshi = Moshi.Builder()
@@ -28,11 +29,11 @@ private val retrofit = Retrofit.Builder()
  * This interface defines all the calls our app will make using a particular [BASE_URL]
  */
 interface AsteroidApiService {
-    @GET("neo/rest/v1/feed?start_date=2022-08-23&end_date=2022-08-24&api_key=DEMO_KEY")
-    suspend fun getAsteroidFeed(): String
+    @GET("neo/rest/v1/feed")
+    suspend fun getAsteroidFeed(@Query("start_date") startDate: String, @Query("end_date") endDate: String, @Query("api_key") apiKey: String): String
 
-    @GET("planetary/apod?api_key=DEMO_KEY")
-    suspend fun getAsteroidImageOfTheDay(): PictureOfDay
+    @GET("planetary/apod")
+    suspend fun getAsteroidImageOfTheDay(@Query("api_key") apiKey: String): PictureOfDay
 }
 
 /**

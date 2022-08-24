@@ -19,7 +19,7 @@ class MainFragment : Fragment(), MenuProvider {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
         val binding = FragmentMainBinding.inflate(inflater)
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = viewLifecycleOwner
 
         binding.viewModel = viewModel
 
@@ -40,6 +40,11 @@ class MainFragment : Fragment(), MenuProvider {
     }
 
     override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+        when (menuItem.itemId) {
+            R.id.show_week_asteroids -> println("MainFragment.onMenuItemSelected ${menuItem.title}")
+            R.id.show_today_asteroids -> println("MainFragment.onMenuItemSelected ${menuItem.title}")
+            R.id.show_saved_asteroids -> println("MainFragment.onMenuItemSelected ${menuItem.title}")
+        }
         return true
     }
 }

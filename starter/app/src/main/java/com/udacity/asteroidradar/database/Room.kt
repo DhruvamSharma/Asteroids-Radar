@@ -6,9 +6,15 @@ import androidx.room.*
 
 const val DATABASE_NAME = "databaseAsteroid"
 
+enum class AsteroidsFilter {
+    SHOW_WEEK_ASTEROIDS,
+    SHOW_TODAY_ASTEROIDS,
+    SHOW_SAVED_ASTEROIDS,
+}
+
 @Dao
 interface AsteroidDao {
-    @Query("SELECT * FROM $DATABASE_NAME")
+    @Query("SELECT * FROM $DATABASE_NAME ORDER BY closeApproachDate ASC")
     fun getAsteroidFeed(): LiveData<List<DatabaseAsteroid>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
