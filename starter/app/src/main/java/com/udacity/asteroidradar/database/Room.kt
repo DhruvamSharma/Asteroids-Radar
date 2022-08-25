@@ -15,7 +15,13 @@ enum class AsteroidsFilter {
 @Dao
 interface AsteroidDao {
     @Query("SELECT * FROM $DATABASE_NAME ORDER BY closeApproachDate ASC")
-    fun getAsteroidFeed(): LiveData<List<DatabaseAsteroid>>
+    fun getSavedAsteroidFeed(): LiveData<List<DatabaseAsteroid>>
+
+    @Query("SELECT * FROM $DATABASE_NAME WHERE closeApproachDate = :date ORDER BY closeApproachDate ASC")
+    fun getTodayAsteroidFeed(date: String): LiveData<List<DatabaseAsteroid>>
+
+    @Query("SELECT * FROM $DATABASE_NAME WHERE closeApproachDate BETWEEN :startDate AND :endDate ORDER BY closeApproachDate ASC")
+    fun getWeekAsteroidFeed(startDate: String, endDate: String): LiveData<List<DatabaseAsteroid>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(vararg asteroid: DatabaseAsteroid)

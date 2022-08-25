@@ -18,10 +18,29 @@ import org.json.JSONObject
  **/
 class AsteroidRepository(private val database: AsteroidDatabase) {
     /**
-     * A list of asteroids that can be shown on the screen.
+     * A list of asteroids that can be shown on the screen
+     * This list contains all the asteroids saved in the database
      */
-    val asteroids: LiveData<List<Asteroid>> =
-        Transformations.map(database.asteroidDao.getAsteroidFeed()) {
+    val savedAsteroids: LiveData<List<Asteroid>> =
+        Transformations.map(database.asteroidDao.getSavedAsteroidFeed()) {
+            it.asDomainModel()
+        }
+
+    /**
+     * A list of asteroids that can be shown on the screen
+     * This list contains only today's asteroids
+     */
+    val todayAsteroids: LiveData<List<Asteroid>> =
+        Transformations.map(database.asteroidDao.getTodayAsteroidFeed(date = getNextSevenDaysFormattedDates().first())) {
+            it.asDomainModel()
+        }
+
+    /**
+     * A list of asteroids that can be shown on the screen
+     * This list contains the whole week asteroids, starting from today
+     */
+    val weekAsteroids: LiveData<List<Asteroid>> =
+        Transformations.map(database.asteroidDao.getWeekAsteroidFeed(startDate = getNextSevenDaysFormattedDates().first(), endDate = getNextSevenDaysFormattedDates().last())) {
             it.asDomainModel()
         }
 
