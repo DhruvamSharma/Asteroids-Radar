@@ -8,6 +8,7 @@ import com.udacity.asteroidradar.database.AsteroidsFilter
 import com.udacity.asteroidradar.database.getDatabase
 import com.udacity.asteroidradar.domain.Asteroid
 import com.udacity.asteroidradar.repository.AsteroidRepository
+import com.udacity.asteroidradar.repository.FeedStatus
 import kotlinx.coroutines.launch
 import java.lang.Exception
 
@@ -16,6 +17,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     val imageOfTheDay: LiveData<PictureOfDay?> get() = _imageOfTheDay
 
     private val _filter = MutableLiveData(AsteroidsFilter.SHOW_WEEK_ASTEROIDS)
+
+    private val _feedStatus = MutableLiveData(FeedStatus.LOADING)
+    val feedStatus: LiveData<FeedStatus> get() = _feedStatus
 
     private val database = getDatabase(application.applicationContext)
     private val repository = AsteroidRepository(database)
@@ -45,10 +49,12 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private fun refreshAsteroidList() {
         viewModelScope.launch {
+            _feedStatus.value = FeedStatus.LOADING
             try {
                 repository.refreshCache()
+                _feedStatus.value = FeedStatus.LOADED
             } catch (ex: Exception) {
-                // do nothing
+                _feedStatus.value = FeedStatus.ERROR
             }
         }
     }

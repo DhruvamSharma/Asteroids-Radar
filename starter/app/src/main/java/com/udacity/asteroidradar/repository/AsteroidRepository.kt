@@ -12,6 +12,12 @@ import com.udacity.asteroidradar.domain.PictureOfDay
 import com.udacity.asteroidradar.domain.asDatabaseModel
 import org.json.JSONObject
 
+enum class FeedStatus {
+    LOADING,
+    LOADED,
+    ERROR,
+}
+
 /**
  * AsteroidRepository handles refreshing the cache and fetching all the asteroids from cache
  * And also, presenting a unified front for the UI.
@@ -40,12 +46,17 @@ class AsteroidRepository(private val database: AsteroidDatabase) {
      * This list contains the whole week asteroids, starting from today
      */
     val weekAsteroids: LiveData<List<Asteroid>> =
-        Transformations.map(database.asteroidDao.getWeekAsteroidFeed(startDate = getNextSevenDaysFormattedDates().first(), endDate = getNextSevenDaysFormattedDates().last())) {
+        Transformations.map(
+            database.asteroidDao.getWeekAsteroidFeed(
+                startDate = getNextSevenDaysFormattedDates().first(),
+                endDate = getNextSevenDaysFormattedDates().last()
+            ),
+        ) {
             it.asDomainModel()
         }
 
     suspend fun getImageOfTheDay(): PictureOfDay {
-        return AsteroidApi.service.getAsteroidImageOfTheDay(apiKey = "DEMO_KEY",)
+        return AsteroidApi.service.getAsteroidImageOfTheDay(apiKey = "DEMO_KEY")
     }
 
     /**

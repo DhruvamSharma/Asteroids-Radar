@@ -1,6 +1,8 @@
 package com.udacity.asteroidradar
 
+import android.view.View
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -8,6 +10,7 @@ import com.squareup.picasso.Picasso
 import com.udacity.asteroidradar.domain.Asteroid
 import com.udacity.asteroidradar.domain.PictureOfDay
 import com.udacity.asteroidradar.main.AsteroidListAdapter
+import com.udacity.asteroidradar.repository.FeedStatus
 
 @BindingAdapter("statusIcon")
 fun bindAsteroidStatusImage(imageView: ImageView, isHazardous: Boolean) {
@@ -24,6 +27,21 @@ fun bindDetailsStatusImage(imageView: ImageView, isHazardous: Boolean) {
         imageView.setImageResource(R.drawable.asteroid_hazardous)
     } else {
         imageView.setImageResource(R.drawable.asteroid_safe)
+    }
+}
+
+@BindingAdapter("feedStatus")
+fun bindFeedStatus(progressBar: ProgressBar, feedStatus: FeedStatus) {
+    when (feedStatus) {
+        FeedStatus.LOADING -> {
+            progressBar.visibility = View.VISIBLE
+        }
+        FeedStatus.ERROR -> {
+            progressBar.visibility = View.GONE
+        }
+        FeedStatus.LOADED -> {
+            progressBar.visibility = View.GONE
+        }
     }
 }
 
