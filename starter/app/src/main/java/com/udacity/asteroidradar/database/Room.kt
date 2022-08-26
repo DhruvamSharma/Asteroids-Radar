@@ -3,8 +3,9 @@ package com.udacity.asteroidradar.database
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.udacity.asteroidradar.Constants.DATABASE_FILE_NAME
+import com.udacity.asteroidradar.Constants.DATABASE_NAME
 
-const val DATABASE_NAME = "databaseAsteroid"
 
 enum class AsteroidsFilter {
     SHOW_WEEK_ASTEROIDS,
@@ -40,9 +41,10 @@ private lateinit var INSTANCE: AsteroidDatabase
 fun getDatabase(context: Context): AsteroidDatabase {
     synchronized(AsteroidDatabase::class.java) {
         if (!::INSTANCE.isInitialized) {
-            INSTANCE = Room.databaseBuilder(context, AsteroidDatabase::class.java, "asteroids")
-                .fallbackToDestructiveMigration()
-                .build()
+            INSTANCE =
+                Room.databaseBuilder(context, AsteroidDatabase::class.java, DATABASE_FILE_NAME)
+                    .fallbackToDestructiveMigration()
+                    .build()
         }
         return INSTANCE
     }
