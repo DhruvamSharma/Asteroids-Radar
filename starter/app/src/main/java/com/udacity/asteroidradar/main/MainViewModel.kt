@@ -35,13 +35,21 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private fun fetchImageOfTheDay() {
         viewModelScope.launch {
-            _imageOfTheDay.value = repository.getImageOfTheDay()
+            try {
+                _imageOfTheDay.value = repository.getImageOfTheDay()
+            } catch (ex: Exception) {
+                // do nothing
+            }
         }
     }
 
     private fun refreshAsteroidList() {
         viewModelScope.launch {
-            repository.refreshCache()
+            try {
+                repository.refreshCache()
+            } catch (ex: Exception) {
+                // do nothing
+            }
         }
     }
 

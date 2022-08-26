@@ -67,4 +67,35 @@ class AsteroidRepository(private val database: AsteroidDatabase) {
         database.asteroidDao.insertAll(*asteroids.asDatabaseModel())
     }
 
+    /**
+     * Refresh the asteroids stored in the offline cache.
+     *
+     * This function doesn't use the IO dispatcher because Room handles the switching of threads
+     * for us
+     *
+     * To actually load the asteroids for use, observe [asteroids]
+     */
+    suspend fun refreshCacheForToday() {
+        val formattedDateList = getNextSevenDaysFormattedDates()
+        val asteroidsAsString = AsteroidApi.service.getAsteroidFeed(
+            startDate = formattedDateList.first(),
+            endDate = formattedDateList.first(),
+            apiKey = "DEMO_KEY",
+        )
+        val asteroids = parseAsteroidsJsonResult(JSONObject(asteroidsAsString))
+        database.asteroidDao.insertAll(*asteroids.asDatabaseModel())
+    }
+
+    /**
+     * Delete the old asteroids from the offline cache
+     *
+     * This function doesn't use the IO dispatcher because Room handles the switching of threads
+     * for us
+     *
+     */
+    suspend fun deleteOldAsteroids() {
+        val formattedDateList = getNextSevenDaysFormattedDates()
+        database.asteroidDao.deleteOldAsteroids(formattedDateList.first())
+    }
+
 }

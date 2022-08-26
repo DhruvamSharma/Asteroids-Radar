@@ -39,8 +39,8 @@ fun bindAsteroidOfTheDayImage(imageView: ImageView, picture: PictureOfDay?) {
         if (picture.mediaType == "image") {
             Picasso.get()
                 .load(picture.url)
-                .placeholder(R.drawable.placeholder_picture_of_day)
-                .error(R.drawable.placeholder_picture_of_day)
+                .placeholder(R.drawable.offline_image_of_the_day)
+                .error(R.drawable.offline_image_of_the_day)
                 .into(imageView)
         }
     }
