@@ -46,6 +46,7 @@
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
             android:padding="16dp"
+            android:contentDescription="@{asteroid.potentiallyHazardous? @string/potentially_hazardous_asteroid_image: @string/not_hazardous_asteroid_image}"
             app:srcCompat="@drawable/placeholder_picture_of_day"
             app:statusIcon="@{asteroid.potentiallyHazardous}"
             tools:src="@drawable/asteroid_hazardous"

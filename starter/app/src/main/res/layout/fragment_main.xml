@@ -30,7 +30,8 @@
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
                 app:srcCompat="@drawable/offline_image_of_the_day"
-                app:asteroidOfTheDayImage="@{viewModel.imageOfTheDay}"/>
+                app:asteroidOfTheDayImage="@{viewModel.imageOfTheDay}"
+                android:contentDescription="@{String.format(@string/nasa_picture_of_day_content_description_format, viewModel.imageOfTheDay.title)}"/>
 
             <TextView
                 android:id="@+id/textView"
