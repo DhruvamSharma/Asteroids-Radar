@@ -2,6 +2,7 @@ package com.udacity.asteroidradar.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
+import com.udacity.asteroidradar.BuildConfig
 import com.udacity.asteroidradar.api.AsteroidApi
 import com.udacity.asteroidradar.api.getNextSevenDaysFormattedDates
 import com.udacity.asteroidradar.api.parseAsteroidsJsonResult
@@ -56,7 +57,7 @@ class AsteroidRepository(private val database: AsteroidDatabase) {
         }
 
     suspend fun getImageOfTheDay(): PictureOfDay {
-        return AsteroidApi.service.getAsteroidImageOfTheDay(apiKey = "DEMO_KEY")
+        return AsteroidApi.service.getAsteroidImageOfTheDay(apiKey = BuildConfig.NASA_KEY)
     }
 
     /**
@@ -72,7 +73,7 @@ class AsteroidRepository(private val database: AsteroidDatabase) {
         val asteroidsAsString = AsteroidApi.service.getAsteroidFeed(
             startDate = formattedDateList.first(),
             endDate = formattedDateList.last(),
-            apiKey = "DEMO_KEY",
+            apiKey = BuildConfig.NASA_KEY,
         )
         val asteroids = parseAsteroidsJsonResult(JSONObject(asteroidsAsString))
         database.asteroidDao.insertAll(*asteroids.asDatabaseModel())
