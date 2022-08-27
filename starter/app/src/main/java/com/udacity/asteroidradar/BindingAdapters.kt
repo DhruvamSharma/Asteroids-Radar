@@ -30,27 +30,6 @@ fun bindDetailsStatusImage(imageView: ImageView, isHazardous: Boolean) {
     }
 }
 
-@BindingAdapter("feedStatus")
-fun bindFeedStatus(progressBar: ProgressBar, feedStatus: FeedStatus) {
-    when (feedStatus) {
-        FeedStatus.LOADING -> {
-            progressBar.visibility = View.VISIBLE
-        }
-        FeedStatus.ERROR -> {
-            progressBar.visibility = View.GONE
-        }
-        FeedStatus.LOADED -> {
-            progressBar.visibility = View.GONE
-        }
-    }
-}
-
-@BindingAdapter("listData")
-fun bindRecyclerView(recyclerView: RecyclerView, data: List<Asteroid>?) {
-    val adapter = recyclerView.adapter as AsteroidListAdapter
-    adapter.submitList(data)
-}
-
 @BindingAdapter("asteroidOfTheDayImage")
 fun bindAsteroidOfTheDayImage(imageView: ImageView, picture: PictureOfDay?) {
     if (picture != null) {

@@ -62,4 +62,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     fun getAsteroids(filter: AsteroidsFilter) {
         _filter.value = filter
     }
+
+    fun updateFeedStatus(feedStatus: FeedStatus) {
+        _feedStatus.value = feedStatus
+    }
 }

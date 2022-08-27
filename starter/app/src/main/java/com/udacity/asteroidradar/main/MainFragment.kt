@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.database.AsteroidsFilter
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
+import com.udacity.asteroidradar.repository.FeedStatus
 
 class MainFragment : Fragment(), MenuProvider {
 
@@ -24,10 +25,34 @@ class MainFragment : Fragment(), MenuProvider {
 
         binding.viewModel = viewModel
 
-        // setup adapter
+
         binding.asteroidRecycler.adapter = AsteroidListAdapter(AsteroidListAdapter.AsteroidClickListener {
             findNavController().navigate(MainFragmentDirections.actionShowDetail(it))
         })
+
+        // observe to show spinner
+        viewModel.feedStatus.observe(viewLifecycleOwner) { feedStatus ->
+            when (feedStatus) {
+                        FeedStatus.LOADING -> {
+                    binding.statusLoadingWheel.visibility = View.VISIBLE
+                }
+                        FeedStatus.ERROR -> {
+                    binding.statusLoadingWheel.visibility = View.GONE
+                }
+                        FeedStatus.LOADED -> {
+                    binding.statusLoadingWheel.visibility = View.GONE
+                }
+            }
+        }
+        // setup adapter
+        viewModel.asteroids.observe(viewLifecycleOwner) { data ->
+            val adapter = binding.asteroidRecycler.adapter as AsteroidListAdapter
+            adapter.submitList(data)
+            if(data.isNotEmpty()) {
+                viewModel.updateFeedStatus(FeedStatus.LOADED)
+            }
+        }
+
 
         // setup menu
         val menuHost = requireActivity()
