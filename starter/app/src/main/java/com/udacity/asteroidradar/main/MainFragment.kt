@@ -30,29 +30,6 @@ class MainFragment : Fragment(), MenuProvider {
             findNavController().navigate(MainFragmentDirections.actionShowDetail(it))
         })
 
-        // observe to show spinner
-        viewModel.feedStatus.observe(viewLifecycleOwner) { feedStatus ->
-            when (feedStatus) {
-                        FeedStatus.LOADING -> {
-                    binding.statusLoadingWheel.visibility = View.VISIBLE
-                }
-                        FeedStatus.ERROR -> {
-                    binding.statusLoadingWheel.visibility = View.GONE
-                }
-                        FeedStatus.LOADED -> {
-                    binding.statusLoadingWheel.visibility = View.GONE
-                }
-            }
-        }
-        // setup adapter
-        viewModel.asteroids.observe(viewLifecycleOwner) { data ->
-            val adapter = binding.asteroidRecycler.adapter as AsteroidListAdapter
-            adapter.submitList(data)
-            if(data.isNotEmpty()) {
-                viewModel.updateFeedStatus(FeedStatus.LOADED)
-            }
-        }
-
 
         // setup menu
         val menuHost = requireActivity()
