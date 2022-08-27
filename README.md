@@ -2,6 +2,10 @@
 
 Asteroid Radar
 
+## How to add API Key for project usage
+1. In the root folder create a file named <b>apiKeys.properties</b>
+2. In this file, add your key like this <b>NASA_KEY="XXXXXXXXXXXXXXXXXX"</b>
+
 ## Getting Started
 
 Asteroid Radar is an app to view the asteroids detected by NASA that pass near Earth, you can view all the detected asteroids in a period of time, their data (Size, velocity, distance to Earth) and if they are potentially hazardous.
