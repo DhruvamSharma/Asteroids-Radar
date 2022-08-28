@@ -30,6 +30,15 @@ class MainFragment : Fragment(), MenuProvider {
             findNavController().navigate(MainFragmentDirections.actionShowDetail(it))
         })
 
+        // setup adapter
+        viewModel.asteroids.observe(viewLifecycleOwner) { data ->
+            val adapter = binding.asteroidRecycler.adapter as AsteroidListAdapter
+            adapter.submitList(data)
+            if(data.isNotEmpty()) {
+                viewModel.updateFeedStatus(FeedStatus.LOADED)
+            }
+        }
+
 
         // setup menu
         val menuHost = requireActivity()

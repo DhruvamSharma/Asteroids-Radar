@@ -10,7 +10,6 @@ import com.squareup.picasso.Picasso
 import com.udacity.asteroidradar.domain.Asteroid
 import com.udacity.asteroidradar.domain.PictureOfDay
 import com.udacity.asteroidradar.main.AsteroidListAdapter
-import com.udacity.asteroidradar.main.MainViewModel
 import com.udacity.asteroidradar.repository.FeedStatus
 
 @BindingAdapter("statusIcon")
@@ -47,12 +46,9 @@ fun bindFeedStatus(progressBar: ProgressBar, feedStatus: FeedStatus) {
 }
 
 @BindingAdapter("listData")
-fun bindRecyclerView(recyclerView: RecyclerView, data: MainViewModel) {
+fun bindRecyclerView(recyclerView: RecyclerView, data: List<Asteroid>?) {
     val adapter = recyclerView.adapter as AsteroidListAdapter
-    adapter.submitList(data.asteroids.value)
-    if(data.asteroids.value?.isNotEmpty() == true) {
-        data.updateFeedStatus(FeedStatus.LOADED)
-    }
+    adapter.submitList(data)
 }
 
 @BindingAdapter("asteroidOfTheDayImage")
